@@ -28,10 +28,8 @@ public class BotonRenumerarArchivosListener implements ActionListener {
 			
 			File[] oldFicheros = operacionesConFicheros.seleccionarFicherosEnDirectorio(homeFrame.getDirectorioDeTrabajo());
 			String prefijo = "";
-			int numeroElementos = oldFicheros.length;
-			String numeroElementosString = ""+numeroElementos;
-			int longitud = numeroElementosString.length();
-			File[] ficherosNormalizados = operacionesConFicheros.renumerarFicheros(oldFicheros, longitud, homeFrame.getDirectorioDeTrabajo());
+			
+			File[] ficherosNormalizados = operacionesConFicheros.renumerarFicheros(oldFicheros);
 		
 			
 			

@@ -45,6 +45,7 @@ public class BotonSeleccionarArchivoADividirListener implements ActionListener {
 			ficheroADividir = fileChooser.getSelectedFile();
 			
 			panel.getTextFieldNombreFicheroADividir().setText(ficheroADividir.getName());
+			panel.setFicheroADividir(ficheroADividir);
 			int numeroDePaginas = operacionesPdf.obtenerNumeroPaginas(ficheroADividir);
 			
 			if (numeroDePaginas ==1) {
@@ -55,6 +56,7 @@ public class BotonSeleccionarArchivoADividirListener implements ActionListener {
 			} else {
 			
 			panel.getLabelNumerosDePaginasDeCorte().setText("Introduce los números de página de corte separados por comas, desde el (1 hasta el "+ numeroDePaginas+")...");
+			panel.setNumeroPaginasFicheroADividir(numeroDePaginas);
 			homeFrame.repaint();
 			mostrarContenido();
 			}

@@ -19,6 +19,7 @@ public class MenuCentralPanel extends JPanel {
 	private NombrarArchivoPanel nombrarArchivoPanel;
 	private BorrarArchivoPanel borrarArchivoPanel;
 	private PaginarEIndicePanel paginarEIndicePanel;
+	private ConfigurationPanel configurationPanel;
 	private HomeFrame homeFrame;
 	
 	
@@ -45,8 +46,11 @@ public class MenuCentralPanel extends JPanel {
 		borrarArchivoPanel = new BorrarArchivoPanel(homeFrame);
 		add(borrarArchivoPanel);
 		
-		paginarEIndicePanel = new PaginarEIndicePanel();
+		paginarEIndicePanel = new PaginarEIndicePanel(homeFrame);
 		add(paginarEIndicePanel);
+		
+		configurationPanel = new ConfigurationPanel(homeFrame);
+		add(configurationPanel);
 		
 		aboutPanel.setVisible(true);
 	}
@@ -113,9 +117,17 @@ public class MenuCentralPanel extends JPanel {
 		
 	}
 	
+public void mostrarConfiguracionPanel() {
+		
+		limpiarTodo();
+		configurationPanel.setVisible(true);
+		
+	}
+	
 	public void limpiarTodo() {
 		
 		homeFrame.repintarHomeFrame();
+		homeFrame.repaint();
 		aboutPanel.setVisible(false);
 		seleccionarDirectorioPanel.setVisible(false);
 		unirPanel.setVisible(false);
@@ -123,6 +135,7 @@ public class MenuCentralPanel extends JPanel {
 		nombrarArchivoPanel.setVisible(false);
 		borrarArchivoPanel.setVisible(false);
 		paginarEIndicePanel.setVisible(false);
+		configurationPanel.setVisible(false);
 		
 	}
 
@@ -205,6 +218,9 @@ public class MenuCentralPanel extends JPanel {
 	public void setPaginarEIndicePanel(PaginarEIndicePanel paginarEIndicePanel) {
 		this.paginarEIndicePanel = paginarEIndicePanel;
 	}
+
+
+	
 	
 	
 }

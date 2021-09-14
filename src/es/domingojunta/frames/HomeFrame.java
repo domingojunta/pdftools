@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,8 +20,11 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
+
+import es.domingojunta.entities.ExpedienteEntity;
 import es.domingojunta.listeners.AboutListener;
 import es.domingojunta.listeners.BorrarListener;
+import es.domingojunta.listeners.ConfiguracionPanelListener;
 import es.domingojunta.listeners.DividirListener;
 import es.domingojunta.listeners.NombrarListener;
 import es.domingojunta.listeners.PaginarListener;
@@ -31,6 +35,10 @@ import es.domingojunta.panels.MenuCentralPanel;
 import es.domingojunta.panels.LogoJuntaPanel;
 import java.awt.BorderLayout;
 import java.awt.Font;
+import javax.swing.JLabel;
+import javax.swing.border.LineBorder;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class HomeFrame extends JFrame {
 
@@ -42,6 +50,7 @@ public class HomeFrame extends JFrame {
 	private JMenu menuArchivo;
 	private JMenu menuGestionPdf;
 	private JMenu menuAyuda;
+	private JMenu menuEdicion;
 	private JMenuItem itemAbout;
 	private JMenuItem itemSeleccionarDirectorio;
 	private JMenuItem itemSalir;
@@ -50,6 +59,7 @@ public class HomeFrame extends JFrame {
 	private JMenuItem itemNombrarPdf;
 	private JMenuItem itemBorrarPdf;
 	private JMenuItem itemPaginar;
+	private JMenuItem itemEdicionConfiguracion;
 	private MenuCentralPanel menuCentral;
 	private JPanel menuLateralPanel;
 	private JButton botonSeleccionarDirectorio;
@@ -58,11 +68,16 @@ public class HomeFrame extends JFrame {
 	private JButton botonNombrarPdf;
 	private JButton botonBorrarPdf;
 	private JButton botonPaginar;
-	
+	private ExpedienteEntity expedienteEntity;
 	private  String directorioDeTrabajo = null;
+	private JLabel labelLogoMenuLaterial;
 	
 	
-	public HomeFrame() {
+	public HomeFrame(ExpedienteEntity expedienteEntity) {
+		
+		
+		this.expedienteEntity = expedienteEntity;
+		
 		setSize(1000,700);
 		setDefaultLookAndFeelDecorated(true);
 		try {
@@ -101,6 +116,7 @@ public class HomeFrame extends JFrame {
 		menuBar = new JMenuBar();
 		
 		menuArchivo = new JMenu("Archivo");
+		menuEdicion = new JMenu("Edición");
 		menuGestionPdf = new JMenu("Gestión PDF");
 		menuAyuda = new JMenu("Ayuda");
 		
@@ -120,6 +136,12 @@ public class HomeFrame extends JFrame {
 		menuArchivo.add(itemBorrarPdf);
 		menuArchivo.add(separador);
 		menuArchivo.add(itemSalir);
+		
+		//Menu Edición
+		
+		itemEdicionConfiguracion = new JMenuItem("Configuración", new ImageIcon("images/ConfigurationFile_16x.png"));
+		itemEdicionConfiguracion.addActionListener(new ConfiguracionPanelListener(this));
+		menuEdicion.add(itemEdicionConfiguracion);
 		
 		//Menu Ayuda
 		itemAbout = new JMenuItem("About",new ImageIcon("images/HelpApplication_16x.png"));
@@ -143,8 +165,10 @@ public class HomeFrame extends JFrame {
 		
 		
 		menuBar.add(menuArchivo);
+		menuBar.add(menuEdicion);
 		menuBar.add(menuGestionPdf);
 		menuBar.add(menuAyuda);
+		
 		
 		setJMenuBar(menuBar);
 		
@@ -162,13 +186,8 @@ public class HomeFrame extends JFrame {
 		
 		menuLateralPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		menuLateralPanel.setLayout(null);
-		menuLateralPanel.setBackground(Color.CYAN);
+		menuLateralPanel.setBackground(new Color(224, 255, 255));
 		menuLateralPanel.setBounds(0, 0, 300, 650);
-		
-		LogoJuntaPanel logoJunta = new LogoJuntaPanel();
-		logoJunta.setBounds(10, 45, 230, 130);
-		
-		menuLateralPanel.add(logoJunta);
 		
 		botonSeleccionarDirectorio = new JButton("Seleccionar directorio",new ImageIcon("images/SelectFileGroup_16x.png"));
 		botonSeleccionarDirectorio.setHorizontalAlignment(SwingConstants.LEFT);
@@ -219,6 +238,16 @@ public class HomeFrame extends JFrame {
 		menuLateralPanel.setVisible(true);
 		getContentPane().add(menuLateralPanel, BorderLayout.WEST);
 		
+		labelLogoMenuLaterial = new JLabel("");
+		labelLogoMenuLaterial.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		labelLogoMenuLaterial.setBounds(50, 30, 150, 160);
+		ImageIcon imagen = new ImageIcon(expedienteEntity.getLogo());
+		int width = labelLogoMenuLaterial.getWidth();
+		int height = labelLogoMenuLaterial.getHeight();
+		Icon iconoTrabajando = new ImageIcon(imagen.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+		labelLogoMenuLaterial.setIcon(iconoTrabajando);
+		menuLateralPanel.add(labelLogoMenuLaterial);
+		
 		
 		//Menú Central ==============================================
 		
@@ -257,10 +286,30 @@ public class HomeFrame extends JFrame {
 		}
 		
 		
+		getContentPane().addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				
+				ImageIcon imagen = new ImageIcon(expedienteEntity.getLogo());
+				int width = labelLogoMenuLaterial.getWidth();
+				int height = labelLogoMenuLaterial.getHeight();
+				Icon iconoTrabajando = new ImageIcon(imagen.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+				labelLogoMenuLaterial.setIcon(iconoTrabajando);
+			}
+		});
+		
+		
 	}
 
 	
 	public void repintarHomeFrame( ) {
+		
+		
+		ImageIcon imagen = new ImageIcon(expedienteEntity.getLogo());
+		int width = labelLogoMenuLaterial.getWidth();
+		int height = labelLogoMenuLaterial.getHeight();
+		Icon iconoTrabajando = new ImageIcon(imagen.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+		labelLogoMenuLaterial.setIcon(iconoTrabajando);
 		
 		if (directorioDeTrabajo==null) {
 			//System.out.println("el directorio de trabajo es nulo");
@@ -310,6 +359,16 @@ public class HomeFrame extends JFrame {
 
 	public void setDirectorioDeTrabajo(String directorioDeTrabajo) {
 		this.directorioDeTrabajo = directorioDeTrabajo;
+	}
+
+
+	public ExpedienteEntity getExpedienteEntity() {
+		return expedienteEntity;
+	}
+
+
+	public void setExpedienteEntity(ExpedienteEntity expedienteEntity) {
+		this.expedienteEntity = expedienteEntity;
 	}
 	
 	

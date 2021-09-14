@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import java.awt.Color;
 
 public class LogoJuntaPanel extends JPanel {
 
@@ -15,6 +16,7 @@ public class LogoJuntaPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	public LogoJuntaPanel() {
+		setBackground(new Color(240, 240, 240, 50));
 		
 		setSize(180,180);
 		setVisible(true);
